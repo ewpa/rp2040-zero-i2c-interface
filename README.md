@@ -8,5 +8,5 @@ More testing is needed to verify that the firmware works correctly, this project
 
 ## Pinout
 
-* SDA (i2c data): GPIO 2
-* SCL (i2c clock): GPIO 3
+* SDA (i2c data): GPIO 26
+* SCL (i2c clock): GPIO 27

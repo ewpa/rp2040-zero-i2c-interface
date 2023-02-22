@@ -23,8 +23,8 @@
 #include "usb_descriptors.h"
 
 #define I2C_INST i2c1
-#define I2C_SDA  2
-#define I2C_SCL  3
+#define I2C_SDA  26
+#define I2C_SCL  27
 
 int main(void) {
     board_init();
