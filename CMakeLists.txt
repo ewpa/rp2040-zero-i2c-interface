@@ -28,7 +28,11 @@ pico_sdk_init()
 add_executable(${NAME}
     main.c
     usb_descriptors.c
+    ws2812.c
 )
+
+# generate the header file into the source tree as it is included in the RP2040 datasheet
+pico_generate_pio_header(${NAME} ${CMAKE_CURRENT_LIST_DIR}/ws2812.pio OUTPUT_DIR ${CMAKE_CURRENT_LIST_DIR}/generated)
 
 target_include_directories(${NAME} PUBLIC
         ${CMAKE_CURRENT_LIST_DIR})

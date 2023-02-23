@@ -21,12 +21,16 @@
 #include "pico/stdlib.h"
 #include "tusb.h"
 #include "usb_descriptors.h"
+#include "ws2812.h"
 
 #define I2C_INST i2c1
 #define I2C_SDA  26
 #define I2C_SCL  27
 
 int main(void) {
+    ws2812_init();
+    put_pixel(urgb_u32(0x03, 0, 0));
+
     board_init();
     tusb_init();
 
@@ -48,10 +52,14 @@ int main(void) {
 }
 
 // Invoked when device is mounted
-void tud_mount_cb(void) {}
+void tud_mount_cb(void) {
+    put_pixel(urgb_u32(0x03, 0x02, 0));
+}
 
 // Invoked when device is unmounted
-void tud_umount_cb(void) {}
+void tud_umount_cb(void) {
+    put_pixel(urgb_u32(0x03, 0, 0));
+}
 
 // Invoked when usb bus is suspended
 void tud_suspend_cb(bool remote_wakeup_en) {}
@@ -114,6 +122,8 @@ bool tud_vendor_control_xfer_cb(uint8_t rhport, uint8_t stage, tusb_control_requ
                 {
                     if (stage != CONTROL_STAGE_SETUP && stage != CONTROL_STAGE_DATA) return true;
                     bool stop = (request->bRequest & CMD_I2C_END);
+                    if (!stop) put_pixel(urgb_u32(0x07, 0x07, 0x07));
+                    else put_pixel(urgb_u32(0, 0x01, 0));
 
                     //sprintf(buffer, "%s i2c %s at 0x%02x, len = %d, stop = %d\r\n", (stage != CONTROL_STAGE_SETUP) ? "[D]" : "[S]", (request->wValue & I2C_M_RD)?"rd":"wr", request->wIndex, request->wLength, stop);
                     //debug_print(buffer);
